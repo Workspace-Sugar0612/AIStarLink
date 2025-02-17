@@ -21,6 +21,24 @@ public class LookAtCamera : MonoBehaviour
 
     }
 
+    public Transform parent; // B物体
+    public float heightOffset = 1.0f; // A物体在B物体上方的高度偏移
+
+    private void Update()
+    {
+        if (parent != null)
+        {
+            // 获取B物体的世界坐标
+            Vector3 parentPosition = parent.position;
+
+            // 设置A物体的位置为B物体的正上方
+            transform.position = parentPosition + Vector3.up * heightOffset;
+
+            // 保持A物体的旋转与B物体一致
+            transform.rotation = parent.rotation;
+        }
+    }
+
     // Update is called once per frame
     void LateUpdate()
     {
