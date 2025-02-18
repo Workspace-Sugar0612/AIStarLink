@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Drawing;
@@ -6,10 +7,21 @@ using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static SphereController;
 using Color = UnityEngine.Color;
 
 public class SphereController : MonoBehaviour
 {
+    // 用于在Update里面判断当前的位置状态
+    // 避免在同一个范围状态中反复只能相应操作
+    public enum SpherePosState
+    {
+        None,
+        OutSide,
+        InSide
+    }
+    private SpherePosState _spherePosState = SpherePosState.None;
+
     private Transform _parentTrans;
     private TMP_Text _label;
     private SphereManager _sphereManager;
@@ -20,7 +32,7 @@ public class SphereController : MonoBehaviour
 
     private Material outerRingMat = null;
     private Material innerRingMat = null;
-    private bool isSelect = false;
+    private bool isSelected = false;
     public bool isGetKeyword = false;
     public float dist = 0.0f;
 
@@ -40,52 +52,63 @@ public class SphereController : MonoBehaviour
         dist = Vector3.Distance(Camera.main.transform.position, this.transform.position);
         UpdateTextControl();
         UpdateMatColor();
+        UpdatePosState();
     }
 
     private void UpdateTextControl()
     {
         if (dist <= _sphereManager.limitDistance)
         {
-            if (!isGetKeyword)
+            if (!isGetKeyword && _spherePosState != SpherePosState.InSide)
             {
+                //_label.gameObject.SetActive(true);
+
                 StartCoroutine(_sphereManager.AssignKeyword(SetLableText));
-                _label.gameObject.SetActive(true);
+                _label.DOColor(Color.white, 3.0f);
+                _label.DOFade(0.7f, 3.0f).OnComplete(() => {  });
             }
         }
         else
         {
-            if (isGetKeyword)
+            if (isGetKeyword && _spherePosState != SpherePosState.OutSide)
             {
                 isGetKeyword = false;
-                _label.gameObject.SetActive(false);
+                _label.DOColor(Color.white, 3.0f);
+                _label.DOFade(0, 3.0f);
             }
         }
     }
 
     private void UpdateMatColor()
     {
-        if (dist <= _sphereManager.limitDistance)
+        if (dist <= _sphereManager.limitDistance && !isSelected && _spherePosState != SpherePosState.InSide)
             SetMatColor(_normalColor, 3.0f);
-        else
+        else if (dist > _sphereManager.limitDistance && !isSelected && _spherePosState != SpherePosState.OutSide)
             SetMatColor(_farColor, 3.0f);
+    }
+
+    private void UpdatePosState()
+    {
+        if (dist <= _sphereManager.limitDistance && _spherePosState != SpherePosState.InSide)
+            _spherePosState = SpherePosState.InSide;
+        else if (dist > _sphereManager.limitDistance && _spherePosState != SpherePosState.OutSide)
+            _spherePosState = SpherePosState.OutSide;
     }
 
     public void OnClickedSphere()
     {
         float dist = Vector3.Distance(Camera.main.transform.position, transform.position);
-        if (!isSelect && dist <= _sphereManager.limitDistance)
+        if (!isSelected && dist <= _sphereManager.limitDistance)
         {
-            Debug.Log("Select Sphere!");
+            isSelected = true;
             transform.SetParent(null);
             SetMatColor(_clickedColor);
-            isSelect = true;
         }
-        else if (isSelect && dist <= _sphereManager.limitDistance)
+        else if (isSelected && dist <= _sphereManager.limitDistance)
         {
-            Debug.Log("UnSelect Sphere!");
+            isSelected = false;
             transform.SetParent(_sphereManager.parentTrans);
             SetMatColor(_normalColor);
-            isSelect = false;
         }
     }
 
@@ -98,39 +121,8 @@ public class SphereController : MonoBehaviour
             innerRingMat = renderArr[1].material;
         }
 
-        StartCoroutine(SetMatColorGradient(outerRingMat, color, sec));
-        StartCoroutine(SetMatColorGradient(innerRingMat, color, sec));
-        // SetMatColor(outerRingMat, color);
-        // SetMatColor(innerRingMat, color);
-        // outerRingMat.color = color;
-        // innerRingMat.color = color;
-    }
-
-    public IEnumerator SetMatColorGradient(Material mat, Color newColor, float sec = 0.5f)
-    {
-        if (mat == null || mat.color == newColor) yield break;
-        Color oldColor = mat.color;
-        float rDiff = 0.0f, gDiff = 0.0f, bDiff = 0.0f, aDiff = 0.0f;
-        rDiff = newColor.r - oldColor.r;
-        gDiff = newColor.g - oldColor.g;
-        bDiff = newColor.b - oldColor.b;
-        aDiff = newColor.a - oldColor.a;
-
-        float gradSec = sec / Mathf.Max(Mathf.Abs(rDiff), Mathf.Abs(gDiff), Mathf.Abs(bDiff), Mathf.Abs(aDiff));
-        while (oldColor != newColor)
-        {
-            if (oldColor.r != newColor.r) oldColor.r += rDiff / (sec * 100.0f);
-            if (oldColor.g != newColor.g) oldColor.g += gDiff / (sec * 100.0f);
-            if (oldColor.b != newColor.b) oldColor.b += bDiff / (sec * 100.0f);
-            if (oldColor.a != newColor.a) oldColor.a += aDiff / (sec * 100.0f);
-            SetMatColor(mat, oldColor);
-            yield return new WaitForSeconds(0.01f);
-        }
-    }
-
-    public void SetMatColor(Material mat, UnityEngine.Color color)
-    {
-        mat.color = color;
+        outerRingMat.DOColor(color, sec).SetEase(Ease.Linear);
+        innerRingMat.DOColor(color, sec).SetEase(Ease.Linear);
     }
 
     private void SetLableText(string text)

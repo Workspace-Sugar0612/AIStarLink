@@ -561,7 +561,7 @@ MonoBehaviour:
   spherePrefab: {fileID: 7167323453822324892, guid: fc5cd84602e67074aaa6369e52fd1039,
     type: 3}
   parentTrans: {fileID: 1493553763}
-  sphereCount: 100
+  sphereCount: 150
   orbitRadius: 20
   limitDistance: 28.5
   isReadContent: 0

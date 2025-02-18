@@ -21,7 +21,8 @@ public class SphereManager : MonoBehaviour
     public bool isReadContent = false;
     private void Awake()
     {
-        limitDistance = 25.0f;
+        orbitRadius = 30.0f;
+        limitDistance = 35.0f;
         x = 0.0f;
         y = 0.0f;
     }
@@ -29,7 +30,7 @@ public class SphereManager : MonoBehaviour
     void Start()
     {
         GenerateSpheres();
-        Camera.main.transform.position = new Vector3(0, 15, -15);
+        Camera.main.transform.position = new Vector3(0, 27, -27);
         Camera.main.transform.LookAt(Vector3.zero);
 
         if (!_fileManager)
