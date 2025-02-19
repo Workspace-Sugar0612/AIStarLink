@@ -5,6 +5,7 @@ using System.Drawing;
 using TMPro;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using static SphereController;
@@ -100,6 +101,7 @@ public class SphereController : MonoBehaviour
 
     public void OnClickedSphere()
     {
+        DOKillMat();
         float dist = Vector3.Distance(Camera.main.transform.position, transform.position);
         if (!isSelected && dist <= _sphereManager.limitDistance)
         {
@@ -107,8 +109,8 @@ public class SphereController : MonoBehaviour
             transform.SetParent(Camera.main.transform);
             SetMatColor(_clickedColor);
 
-            SelectAgePanel saPanel = _uiConsole.FindPanel<SelectAgePanel>();
-            saPanel.gameObject.SetActive(true);
+            // SelectAgePanel saPanel = _uiConsole.FindPanel<SelectAgePanel>();
+            // saPanel.gameObject.SetActive(true);
         }
         else if (isSelected && dist <= _sphereManager.limitDistance)
         {
@@ -136,4 +138,11 @@ public class SphereController : MonoBehaviour
         isGetKeyword = true;
         _label.text = text;
     }
+
+    // Kill the previous dotween task
+    public void DOKillMat()
+    {
+        if (outerRingMat) outerRingMat.DOKill();
+        if (innerRingMat) innerRingMat.DOKill();
+    }    
 }
