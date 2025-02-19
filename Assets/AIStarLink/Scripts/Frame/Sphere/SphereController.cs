@@ -25,6 +25,7 @@ public class SphereController : MonoBehaviour
     private Transform _parentTrans;
     private TMP_Text _label;
     private SphereManager _sphereManager;
+    private UIConsole _uiConsole;
 
     private Color _normalColor = new Color(44.0f / 255.0f, 79.0f / 255.0f, 255.0f / 255.0f, 85.0f / 255.0f);
     private Color _clickedColor = new Color(255.0f / 255.0f, 177.0f / 255.0f, 67.0f / 255.0f, 85.0f / 255.0f);
@@ -40,6 +41,7 @@ public class SphereController : MonoBehaviour
     {
         _label = GetComponentInChildren<TMP_Text>();
         _sphereManager = (SphereManager)FindObjectOfType(typeof(SphereManager));
+        _uiConsole = (UIConsole)FindObjectOfType(typeof(UIConsole));
     }
 
     public void Start()
@@ -87,6 +89,7 @@ public class SphereController : MonoBehaviour
             SetMatColor(_farColor, 3.0f);
     }
 
+    // ¸üÐÂPosState
     private void UpdatePosState()
     {
         if (dist <= _sphereManager.limitDistance && _spherePosState != SpherePosState.InSide)
@@ -101,8 +104,11 @@ public class SphereController : MonoBehaviour
         if (!isSelected && dist <= _sphereManager.limitDistance)
         {
             isSelected = true;
-            transform.SetParent(null);
+            transform.SetParent(Camera.main.transform);
             SetMatColor(_clickedColor);
+
+            SelectAgePanel saPanel = _uiConsole.FindPanel<SelectAgePanel>();
+            saPanel.gameObject.SetActive(true);
         }
         else if (isSelected && dist <= _sphereManager.limitDistance)
         {

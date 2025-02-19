@@ -17,6 +17,7 @@ public class SphereManager : MonoBehaviour
     private float x = 0.0f, y = 0.0f;
     private List<GameObject> spheres = new List<GameObject>();
     private bool isCursorControl = false;
+    private UIToolkit _uiToolkit; // 用来检查鼠标点击的是UI层还是3D场景层
 
     public bool isReadContent = false;
     private void Awake()
@@ -25,20 +26,16 @@ public class SphereManager : MonoBehaviour
         limitDistance = 35.0f;
         x = 0.0f;
         y = 0.0f;
+
+        if (!_asMath) _asMath = (ASMath)FindObjectOfType(typeof(ASMath));
+        if (!_fileManager) _fileManager = (FileManager)FindObjectOfType(typeof(FileManager));
+        if (!_uiToolkit) _uiToolkit = (UIToolkit)FindObjectOfType(typeof(UIToolkit));
     }
 
     void Start()
     {
         GenerateSpheres();
-        Camera.main.transform.position = new Vector3(0, 27, -27);
-        Camera.main.transform.LookAt(Vector3.zero);
-
-        if (!_fileManager)
-        {
-            _fileManager = (FileManager)FindObjectOfType(typeof(FileManager));
-            StartCoroutine(_fileManager.UnityWebRequestJsonString(Application.streamingAssetsPath + "/keyword.txt", GetSearchTerm));
-        }
-        if (!_asMath) _asMath = (ASMath)FindObjectOfType(typeof(ASMath));
+        StartCoroutine(_fileManager.UnityWebRequestJsonString(Application.streamingAssetsPath + "/keyword.txt", GetSearchTerm));
     }
 
     void GenerateSpheres()
@@ -56,9 +53,9 @@ public class SphereManager : MonoBehaviour
 
     void Update()
     {
-        HandleRotation();
+        //HandleRotation();
         UpdateSizes();
-        UpdateRootRotation();
+        //UpdateRootRotation();
         OnClickedSphere();
     }
 
@@ -100,7 +97,7 @@ public class SphereManager : MonoBehaviour
 
     public void OnClickedSphere()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !_uiToolkit.CheckGuiRaycastObjects())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

@@ -34,7 +34,7 @@ public class FileManager : MonoBehaviour
             // 获取文件内容
             string fileContent = request.downloadHandler.text;
             callback(fileContent);
-            Debug.Log("File Content: " + fileContent);
+            // Debug.Log("File Content: " + fileContent);
         }
     }
 }

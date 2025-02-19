@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/AIStarLink/Scenes/Main.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/SuperScrollView/Demo/Scenes/Menu.unity
+    guid: 29634dc35083d4245b01ba83c95f4b0d
   m_configObjects: {}
