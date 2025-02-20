@@ -1,38 +1,53 @@
-using SuperScrollView;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class AgeItem : MonoBehaviour
 {
-    public Transform rootTransform;
-    public Image imgIcon;
-    public TMP_Text title;
+    public Text content;
+    public Toggle toggle;
+    public Image img;
 
-    private LoopListViewItem2 _item;
+    public Sprite normal;
+    public Sprite press;
 
-    public void Start()
+    private void Awake()
     {
-        _item = GetComponent<LoopListViewItem2>();
+
     }
 
-    public void Update()
+    void Start()
     {
-  
+        toggle.onValueChanged.AddListener(onValChanged);
+
+        if (toggle.isOn) { onValChanged(true); }
+        else { onValChanged(false); }
     }
 
-    public void SetText(string text)
+    // Update is called once per frame
+    void Update()
     {
-        title.text = text;
+        
     }
 
-    public void SetScale(float scale)
+    public void SetContent(string text)
     {
-        rootTransform.GetComponent<CanvasGroup>().alpha = scale;
-        rootTransform.transform.localScale = new Vector3(1.0f, scale, 1.0f);
+        content.text = text;
+    }
+
+    public void onValChanged(bool b)
+    {
+        if (b)
+        {
+            SetImage(press);
+        }
+        else
+        {
+            SetImage(normal);
+        }
+    }
+
+    private void SetImage(Sprite sprite)
+    {
+        img.sprite = sprite;
     }
 }

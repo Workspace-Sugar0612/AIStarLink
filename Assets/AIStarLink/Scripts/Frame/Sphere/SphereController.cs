@@ -101,22 +101,21 @@ public class SphereController : MonoBehaviour
 
     public void OnClickedSphere()
     {
-        DOKillMat();
+        SelectAgePanel saPanel = _uiConsole.FindPanel<SelectAgePanel>();
         float dist = Vector3.Distance(Camera.main.transform.position, transform.position);
         if (!isSelected && dist <= _sphereManager.limitDistance)
         {
             isSelected = true;
             transform.SetParent(Camera.main.transform);
             SetMatColor(_clickedColor);
-
-            // SelectAgePanel saPanel = _uiConsole.FindPanel<SelectAgePanel>();
-            // saPanel.gameObject.SetActive(true);
+            saPanel.Active(true);
         }
         else if (isSelected && dist <= _sphereManager.limitDistance)
         {
             isSelected = false;
             transform.SetParent(_sphereManager.parentTrans);
             SetMatColor(_normalColor);
+            saPanel.Active(false);
         }
     }
 
@@ -129,6 +128,7 @@ public class SphereController : MonoBehaviour
             innerRingMat = renderArr[1].material;
         }
 
+        DOKillMat();
         outerRingMat.DOColor(color, sec).SetEase(Ease.Linear);
         innerRingMat.DOColor(color, sec).SetEase(Ease.Linear);
     }
