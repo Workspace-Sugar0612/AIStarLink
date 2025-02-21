@@ -95,6 +95,7 @@ public class SphereManager : MonoBehaviour
         }
     }
 
+    private UIConsole _uiConsole;
     public void OnClickedSphere()
     {
         if (Input.GetMouseButtonDown(0) && !_uiToolkit.CheckGuiRaycastObjects())
@@ -104,7 +105,14 @@ public class SphereManager : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 if (hit.collider.tag == "Star")
-                { 
+                {
+                    if (Staticvariables.isSearch)
+                    {
+                        if (!_uiConsole) _uiConsole = (UIConsole)FindObjectOfType(typeof(UIConsole));
+                        _uiConsole.ShowHintTip($"正在搜索中，请勿切换内容");
+                        return;
+                    }
+
                     SphereController controller = hit.transform.GetComponent<SphereController>();
                     if (controllerSphere != null)
                     {

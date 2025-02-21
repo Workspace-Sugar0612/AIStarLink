@@ -67,8 +67,8 @@ public class CameraController : MonoBehaviour
         if (Input.GetMouseButton(0) && !_uiToolkit.CheckGuiRaycastObjects())
         {
             //CursorActive(false);
-            m_Yaw += Input.GetAxis("Mouse X") * Time.deltaTime * m_RotateSpeed;
-            m_Pitch -= Input.GetAxis("Mouse Y") * Time.deltaTime * m_RotateSpeed;
+            m_Yaw += Input.GetAxis("Horizontal") * Time.deltaTime * m_RotateSpeed;
+            m_Pitch -= Input.GetAxis("Vertical") * Time.deltaTime * m_RotateSpeed;
 
             m_Pitch = ClampAngle(m_Pitch, m_MinPitchAngle, m_MaxPitchAngle);
             m_Yaw = ClampAngle(m_Yaw, m_MinYawAngle, m_MaxYawAngle);

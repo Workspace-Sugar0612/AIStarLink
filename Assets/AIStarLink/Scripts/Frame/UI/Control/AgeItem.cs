@@ -29,6 +29,13 @@ public class AgeItem : MonoBehaviour
         
     }
 
+    public void Init(string content, string name)
+    {
+        SetContent(content);
+        gameObject.name = name;
+        gameObject.SetActive(true);
+    }
+
     public void SetContent(string text)
     {
         content.text = text;
