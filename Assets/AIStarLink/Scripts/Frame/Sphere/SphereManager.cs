@@ -109,7 +109,7 @@ public class SphereManager : MonoBehaviour
                     if (Staticvariables.isSearch)
                     {
                         if (!_uiConsole) _uiConsole = (UIConsole)FindObjectOfType(typeof(UIConsole));
-                        _uiConsole.ShowHintTip($"正在搜索中，请勿切换内容");
+                        _uiConsole.ShowHintTip($"正在搜索中，请勿切换内容", 1.5f);
                         return;
                     }
 

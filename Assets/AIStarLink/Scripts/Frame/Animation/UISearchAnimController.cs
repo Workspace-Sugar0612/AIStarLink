@@ -9,7 +9,8 @@ public class UISearchAnimController : MonoBehaviour
         None,
         Search,
         Changed,
-        Normal
+        Normal,
+        ChangedBack
     }
 
     public Animator animator;
@@ -26,6 +27,9 @@ public class UISearchAnimController : MonoBehaviour
                 break;
             case AnimState.Normal:
                 Normal();
+                break;
+            case AnimState.ChangedBack:
+                ChangedBack();
                 break;
             default:
                 break;
@@ -46,7 +50,16 @@ public class UISearchAnimController : MonoBehaviour
 
     private void Normal()
     {
+        animator.SetBool("Changed", false);
         animator.SetBool("Search", false);
         animator.SetBool("isNormal", true);
+    }
+
+    private void ChangedBack()
+    {
+        // animator.speed = -1.0f;
+        animator.SetBool("isNormal", false);
+        animator.SetBool("Search", false);
+        animator.SetBool("Changed", true);
     }
 }

@@ -45,6 +45,7 @@ public class AgeItem : MonoBehaviour
     {
         if (b)
         {
+            Staticvariables.level = content.text;
             SetImage(press);
         }
         else

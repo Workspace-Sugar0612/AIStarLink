@@ -108,14 +108,14 @@ public class SphereController : MonoBehaviour
             isSelected = true;
             transform.SetParent(Camera.main.transform);
             SetMatColor(_clickedColor);
-            saPanel.Active(true);
+            saPanel.Open(_label.text);
         }
         else if (isSelected && dist <= _sphereManager.limitDistance)
         {
             isSelected = false;
             transform.SetParent(_sphereManager.parentTrans);
             SetMatColor(_normalColor);
-            saPanel.Active(false);
+            saPanel.Hidden();
         }
     }
 

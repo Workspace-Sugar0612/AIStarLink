@@ -28,9 +28,9 @@ public class HintPanel : MonoBehaviour
         contentTX.text = content;
     }
 
-    public void SetCanvasGroup(float alpha, float duration, Action<HintPanel> destroy)
+    public void SetCanvasGroup(float alpha, float duration, float delay, Action<HintPanel> destroy)
     {
-        canvasGroup.DOFade(alpha, duration).SetDelay(1f).OnComplete(() => 
+        canvasGroup.DOFade(alpha, duration).SetDelay(delay).OnComplete(() => 
         {
             if (destroy != null)
                 destroy(this); 

@@ -52,14 +52,14 @@ public class UIConsole : MonoBehaviour
         return hintPanel;
     }
 
-    public void ShowHintTip(string content)
+    public void ShowHintTip(string content, float duration)
     {
         HintPanel hintPanel = hintPool.Create("HintTip");
         hintPanel.canvasGroup.DOFade(1.0f, 0f);
         hintPanel.SetContent(content);
         hintPanel.transform.DOLocalMoveY(Screen.height / 2.0f - 90.0f, 0.5f).SetEase(Ease.OutBounce).OnComplete(() => 
         {
-            hintPanel.SetCanvasGroup(0.0f, 1.0f, hintPool.Destroy);
+            hintPanel.SetCanvasGroup(0.0f, 1.0f, duration, hintPool.Destroy);
         });
     }
 }

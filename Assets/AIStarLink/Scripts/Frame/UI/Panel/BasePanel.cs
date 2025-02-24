@@ -9,7 +9,8 @@ public class BasePanel : MonoBehaviour
     {
         Neno,
         Progressive,
-        Traverse
+        Traverse,
+        TraverseLocal
     }
 
     protected UIConsole _uiConsole;
@@ -35,6 +36,7 @@ public class BasePanel : MonoBehaviour
     {
         if (method == ShowMethod.Progressive) { Progressive(param); }
         else if (method == ShowMethod.Traverse) { TraverseShow(param); }
+        else if (method == ShowMethod.TraverseLocal) { TraverseLocalShow(param); }
     }
 
     /// <summary>
@@ -55,6 +57,14 @@ public class BasePanel : MonoBehaviour
         Vector3 pos = (Vector3)param[1];
         float duration = (float)param[2];
         trans.DOMove(pos, duration);
+    }
+
+    private void TraverseLocalShow(object[] param)
+    {
+        Transform trans = param[0] as Transform;
+        Vector3 pos = (Vector3)param[1];
+        float duration = (float)param[2];
+        trans.DOLocalMove(pos, duration);
     }
 
     public virtual void Active(bool active) 
