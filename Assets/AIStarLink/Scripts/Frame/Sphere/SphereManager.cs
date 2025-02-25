@@ -81,7 +81,7 @@ public class SphereManager : MonoBehaviour
         {
             Vector3 viewPos = Camera.main.WorldToViewportPoint(sphere.transform.position);
             float distance = Vector2.Distance(viewPos, Vector2.one * 0.5f);
-            Vector3 scale = Vector3.one * (1.2f * (1 - distance));
+            Vector3 scale = Vector3.one * (1f * (1 - distance));
             sphere.transform.localScale = scale;
         }
     }

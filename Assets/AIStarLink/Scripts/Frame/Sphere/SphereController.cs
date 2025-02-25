@@ -102,6 +102,8 @@ public class SphereController : MonoBehaviour
     public void OnClickedSphere()
     {
         SelectAgePanel saPanel = _uiConsole.FindPanel<SelectAgePanel>();
+        AnswerPanel answerPanel = _uiConsole.FindPanel<AnswerPanel>();
+
         float dist = Vector3.Distance(Camera.main.transform.position, transform.position);
         if (!isSelected && dist <= _sphereManager.limitDistance)
         {
@@ -116,6 +118,7 @@ public class SphereController : MonoBehaviour
             transform.SetParent(_sphereManager.parentTrans);
             SetMatColor(_normalColor);
             saPanel.Hidden();
+            answerPanel.Hideen();
         }
     }
 

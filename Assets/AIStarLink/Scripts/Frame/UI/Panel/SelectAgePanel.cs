@@ -96,8 +96,7 @@ public class SelectAgePanel : BasePanel
 
     private void onClickedSubmitBtn()
     {
-        
-        _usrMessage += $"Applicable to {m_AgeCn2En[Staticvariables.level]}, please return to Chinese, thank you."; ;
+        _usrMessage += $"Applicable to {m_AgeCn2En[Staticvariables.level]}, please return to Chinese, thank you.";
         _aiChatAPI.SendOnDeepSeek(_usrMessage, _keyword);
         Active(false);
         _uiSearchAnimController.SetAnimState(UISearchAnimController.AnimState.Changed);
